@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import { StatusBar, Platform, PermissionsAndroid} from "react-native";
 import Geolocation from "@react-native-community/geolocation";
 import haversine from 'haversine';
-
 import Map from "./view";
 import {colors} from "@constants/index";
 import IAction from "@store/types/IAction";
@@ -77,15 +76,9 @@ const MapController = (
         // noinspection JSIgnoredPromiseFromCall
         requestPermission();
 
-
         getCurrentLocation()
 
     }, []);
-
-    const calcDistance = (newLatLng: any) => {
-        return haversine(prevCoordinates, newLatLng) || 0;
-    };
-
 
 
     const getCurrentLocation = () => {
@@ -96,7 +89,8 @@ const MapController = (
                 longitude: data.coords.longitude
             })
         }, error => {
-            getCurrentLocation()
+            console.log(error);
+            // getCurrentLocation()
         })
     };
 

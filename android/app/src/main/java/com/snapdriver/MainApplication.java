@@ -1,10 +1,11 @@
 package com.snapdriver;
 
-import android.app.Application;
+import androidx.multidex.MultiDexApplication;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import com.reactlibrary.LaunchApplicationPackage;
+import com.ocetnik.timer.BackgroundTimerPackage;
+import com.reactlibrary.SajjadLaunchApplicationPackage;
 import com.heanoria.library.reactnative.locationenabler.RNAndroidLocationEnablerPackage;
 import com.zmxv.RNSound.RNSoundPackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
@@ -16,12 +17,6 @@ import com.horcrux.svg.SvgPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -29,7 +24,7 @@ import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends MultiDexApplication implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {

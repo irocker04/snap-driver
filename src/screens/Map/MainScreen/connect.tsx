@@ -22,6 +22,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
         UpdateLocation: user.UpdateLocation,
         SetNetConnection: map.SetNetConnection,
         GetProfile: user.GetProfile,
+        GetOrderInfo: booking.GetOrderInfo,
+        Reset: booking.Reset,
+        SetTripInfo: booking.SetTripInfo,
+        ChangeOrderStatus: booking.ChangeOrderStatus,
         SendPush: (payload: any) => ({
             type: SendPush.SUCCESS,
             payload

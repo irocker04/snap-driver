@@ -8,18 +8,22 @@ import styles from "./styles";
 import Button from "@components/common/Button";
 import strings from "@constants/strings";
 import PauseIcon from "@assets/icons/PauseIcon";
+import MapHeader from "@components/navigation/MapHeader";
 
 interface IProps {
     changeOrderStatus: () => void;
     isLoading: boolean;
     drivingTo: string;
     duration: string;
-    distance: string;
+    distance: number;
     openGoogleMaps: () => void;
-    goToChat: () => void;
+    callToClient: () => void;
     wait: () => void;
     isWaiting: boolean;
-    isVisible: boolean
+    isVisible: boolean;
+    drivingFrom: string;
+    waitingTime: string;
+    price: number;
 }
 
 const CurrentTripPanelView = (
@@ -33,22 +37,45 @@ const CurrentTripPanelView = (
         isWaiting,
         wait,
         isVisible,
-        goToChat
+        callToClient,
+        drivingFrom,
+        waitingTime,
+        price,
     }: IProps) => {
     return (
-        <View>
-            <HatCutout style={styles.hatCutOut}/>
-            <View style={styles.wrapper}>
-                <View style={styles.innerWrapper}>
-
-                    <View style={styles.imgWrapper}>
-                        <Image style={styles.img} source={images.location}/>
-                        <View style={styles.infoWrapper}>
-                            {isVisible && <Text style={styles.info}>{distance} км - {duration} мин в пути</Text>}
-                            <Text style={styles.text}>{drivingTo}</Text>
+        <View style={styles.container}>
+            <MapHeader title={'Таксометр'}/>
+            <View style={{flex: 1}}>
+                <View style={{alignItems: 'center', marginTop: 20}}>
+                    <Text style={styles.rate}>Эконом</Text>
+                    <Text style={styles.price}>{price} сум</Text>
+                </View>
+                <View style={styles.info}>
+                    <Text style={styles.infoText}>{distance} km</Text>
+                    <Text style={styles.infoText}>{duration}</Text>
+                </View>
+                <View style={{marginTop: 30, marginLeft: 20}}>
+                    <View style={styles.direction}>
+                        <View style={styles.row}>
+                            <View style={[styles.addressCircle]}>
+                                <View style={styles.innerCircle}/>
+                            </View>
+                            <Text style={styles.directionText}>{drivingFrom}</Text>
+                        </View>
+                        <View style={styles.row}>
+                            <View style={[styles.addressCircle, {backgroundColor: 'red'}]}>
+                                <View style={styles.innerCircle}/>
+                            </View>
+                            <Text style={styles.directionText}>{drivingTo}</Text>
                         </View>
                     </View>
                 </View>
+                <View style={styles.waiting}>
+                    <Text style={styles.waitingText}>Время ожидание:</Text>
+                    <Text style={styles.waitingText}>{waitingTime}</Text>
+                </View>
+            </View>
+            <View style={styles.wrapper}>
                 <View style={styles.bottomWrapper}>
                     {
                         isVisible &&
@@ -65,14 +92,14 @@ const CurrentTripPanelView = (
                             />
                         </View>
                     </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback onPress={goToChat}>
+                    <TouchableWithoutFeedback onPress={callToClient}>
                         <View style={styles.bottomIconWrapper}>
-                            <Icon name="chat" size={25} color={colors.blue}/>
+                            <Icon name="phone" size={25} color={colors.blue}/>
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
                 <Button
-                    onPress={changeOrderStatus}
+                    onLongPress={changeOrderStatus}
                     text={strings.finish as string}
                     isLoading={isLoading}
                 />

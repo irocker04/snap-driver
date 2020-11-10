@@ -2,10 +2,13 @@ import {
     AcceptNewOrder, ChangeOrderStatus, GetOrderList,
     NewOrder, SendPush,
     SetDriverStatusOffline,
-    SetDriverStatusOnline, SetWaiting,
-    SkipNewOrder
+    SetDriverStatusOnline,
+    SetWaiting,
+    SkipNewOrder,
+    GetOrderInfo, Reset, SetTripInfo,
 } from "../constants/booking";
 import {uniqBy} from "lodash"
+import OrderStatus from "@constants/orderStatus";
 
 const initialState = {
     driver: {
@@ -25,6 +28,11 @@ const initialState = {
     },
     messages: {
         data: [],
+    },
+    tripInfo: {
+        distance: 0,
+        routeCoordinates: [],
+        duration: 0
     }
 };
 
@@ -113,11 +121,25 @@ export default (state = initialState, action: any) => {
             }
         }
         case ChangeOrderStatus.SUCCESS: {
-            return {
-                ...state,
-                newOrder: {
-                    data: action.payload,
-                    isModalVisible: false,
+            if (action.payload.status === OrderStatus.CANCELED) {
+                return {
+                    ...state,
+                    newOrder: {
+                        data: {},
+                        isModalVisible: false,
+                    },
+                    driver: {
+                        ...state.driver,
+                        isBusy: false
+                    }
+                }
+            } else {
+                return {
+                    ...state,
+                    newOrder: {
+                        data: action.payload,
+                        isModalVisible: false,
+                    }
                 }
             }
         }
@@ -141,6 +163,33 @@ export default (state = initialState, action: any) => {
                 messages: {
                     data: uniqBy([...state.messages.data, action.payload], 'id')
                 },
+            }
+        }
+        case GetOrderInfo.SUCCESS: {
+            return {
+                ...state,
+                newOrder: {
+                    data: action.payload,
+                    isModalVisible: false,
+                },
+            }
+        }
+        case Reset.SUCCESS: {
+            return {
+                ...state,
+                newOrder: initialState.newOrder,
+                messages: initialState.messages,
+                waiting: initialState.waiting,
+                tripInfo: initialState.tripInfo,
+            }
+        }
+        case SetTripInfo.SUCCESS: {
+            return {
+                ...state,
+                tripInfo: {
+                    ...state.tripInfo,
+                    ...action.payload
+                }
             }
         }
         default:

@@ -1,5 +1,4 @@
 import {put, takeLatest, call, all} from "redux-saga/effects";
-import {useSelector} from "react-redux";
 import io from "socket.io-client"
 import Echo from "laravel-echo";
 
@@ -8,6 +7,7 @@ import * as Booking from "../constants/booking";
 
 let echo: any;
 
+export {echo}
 
 function* SetDriverStatusOnline(action: any) {
     try {
@@ -42,7 +42,7 @@ function* SetDriverStatusOnline(action: any) {
 function* SetDriverStatusOffline(action: any) {
     try {
 
-        echo.disconnect();
+        echo && echo.disconnect();
 
         yield put({
             type: Booking.SetDriverStatusOffline.SUCCESS,
@@ -220,6 +220,42 @@ function* SendPush(action: any) {
     }
 }
 
+function* GetOrderInfo(action: any) {
+    try {
+
+        echo = new Echo({
+            host: 'https://snaptaxi.uz:6060',
+            broadcaster: 'socket.io',
+            client: io,
+        });
+
+        const {data} = yield call(api.request.get, `/car-booking/details/${action.payload}`,);
+
+        echo
+            .channel(`snaptaxi_database_car_order.${action.payload}`)
+            .listen('.OrderStatusEvent', (orderInfo: any) => {
+                if (orderInfo.booking.status === 'canceled') {
+                    action.cb().socketCb()
+                }
+            });
+
+
+        yield put({
+            type: Booking.GetOrderInfo.SUCCESS,
+            payload: data.data,
+        });
+
+        yield call(action.cb().cb, data);
+
+    } catch (error) {
+        yield put({
+            type: Booking.GetOrderInfo.FAILURE,
+            payload: error
+        });
+
+        yield call(action.errorCb, error);
+    }
+}
 
 
 export default function* root() {
@@ -232,6 +268,7 @@ export default function* root() {
         takeLatest(Booking.GetOrderList.REQUEST, GetOrderList),
         takeLatest(Booking.RateOrder.REQUEST, RateOrder),
         takeLatest(Booking.SendPush.REQUEST, SendPush),
+        takeLatest(Booking.GetOrderInfo.REQUEST, GetOrderInfo),
     ]);
 }
 

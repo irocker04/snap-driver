@@ -30,6 +30,6 @@ export default StyleSheet.create({
     },
     icon: {
         padding: 10,
-        backgroundColor: colors.white,
+        backgroundColor: colors.red,
     },
 });

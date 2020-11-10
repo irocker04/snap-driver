@@ -1,20 +1,22 @@
-import colors from '@constants/colors';
-import SCREENS from '@constants/screens';
+import {Alert, StatusBar} from 'react-native';
 import BackgroundGeolocation from '@mauron85/react-native-background-geolocation';
 import NetInfo from '@react-native-community/netinfo';
 import {StackNavigationProp} from '@react-navigation/stack';
+import firebase from "@react-native-firebase/messaging";
+import LaunchApplication from 'react-native-launch-application';
 import IAction from '@store/types/IAction';
 import React, {useEffect, useState} from 'react';
-import {Alert, Linking, StatusBar} from 'react-native';
-import LaunchApplication from 'react-native-bring-foreground';
 import MainScreenView from './view';
-
-const PushNotification = require('react-native-push-notification');
+import colors from '@constants/colors';
+import SCREENS from '@constants/screens';
+import BackgroundTimer from 'react-native-background-timer';
+import {getDistance} from "geolib";
 
 interface IProps {
     navigation: StackNavigationProp<any>;
     SetDriverStatusOnline: IAction;
     SetDriverStatusOffline: IAction;
+    GetOrderInfo: IAction;
     NewOrder: IAction;
     SetNetConnection: IAction;
     driver: any;
@@ -22,35 +24,47 @@ interface IProps {
     isNetConnected: boolean;
     car: any;
     UpdateLocation: IAction;
+    ChangeOrderStatus: IAction;
+    Reset: IAction;
+    SetTripInfo: IAction;
     GetProfile: IAction;
     SendPush: any;
 }
 
-const MainScreenController = ({
-    navigation,
-    driver,
-    SetDriverStatusOffline,
-    SetDriverStatusOnline,
-    NewOrder,
-    newOrder,
-    SetNetConnection,
-    isNetConnected,
-    car,
-    UpdateLocation,
-    GetProfile,
-    SendPush,
-}: IProps) => {
+
+const MainScreenController = (
+    {
+        navigation,
+        driver,
+        SetDriverStatusOffline,
+        SetDriverStatusOnline,
+        NewOrder,
+        newOrder,
+        SetNetConnection,
+        isNetConnected,
+        car,
+        UpdateLocation,
+        GetProfile,
+        GetOrderInfo,
+        ChangeOrderStatus,
+        Reset,
+        SendPush,
+        SetTripInfo,
+    }: IProps) => {
     const [showTariff, setShowTariff] = useState(false);
-    const [intervalId, setIntervalId] = useState<any>();
+    const [location, setLocation] = useState({latitude: 1, longitude: 2});
+    const [history, setHistory] = useState<any>([]);
+    const [distance, setDistance] = useState<number>(0);
 
     let configureBackgroundGeolocation = () => {
+
         BackgroundGeolocation.configure({
             desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
             stationaryRadius: 50,
             distanceFilter: 50,
             notificationTitle: 'Background tracking',
             notificationText: 'enabled',
-            debug: true,
+            debug: false,
             startOnBoot: false,
             stopOnTerminate: true,
             locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
@@ -60,30 +74,54 @@ const MainScreenController = ({
             stopOnStillActivity: false,
         });
 
-        BackgroundGeolocation.on('location', ({latitude, longitude}) => {
-            // handle your locations here
-            // to perform long running operation on iOS
-            // you need to create background task
-            UpdateLocation({
-                lat: `${latitude}`,
-                lng: `${longitude}`,
+        BackgroundGeolocation.on('location', (location) => {
+
+            SetTripInfo({
+                routeCoordinates: history,
+                distance,
             });
-            // setTimeout(() => {
-            //     Linking.openURL('snapDriver://booking');
-            // }, 2000);
-            console.log('GOT THE LOCATION');
+
+            setLocation((prev) => ({
+                ...prev,
+                latitude: location.latitude,
+                longitude: location.longitude,
+            }));
+
+            setHistory((prev) => {
+                setDistance((prevDistance) => {
+                    if (prev.length === 0) {
+                        return 0;
+                    }
+                    const latestItem = prev[prev.length - 1];
+                    return (
+                        prevDistance +
+                        getDistance(
+                            {
+                                latitude: latestItem.latitude,
+                                longitude: latestItem.longitude,
+                            },
+                            {
+                                latitude: location.latitude,
+                                longitude: location.longitude,
+                            }
+                        )
+                    );
+                });
+
+                return prev.concat({
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                });
+            });
 
             BackgroundGeolocation.startTask((taskKey) => {
-                // execute long running task
-                // eg. ajax post location
-                // IMPORTANT: task has to be ended by endTask
+
                 BackgroundGeolocation.endTask(taskKey);
             });
         });
 
         BackgroundGeolocation.on('stationary', (stationaryLocation) => {
-            // handle stationary locations here
-            // Actions.sendLocation(stationaryLocation);
+
         });
 
         BackgroundGeolocation.on('error', (error) => {
@@ -133,17 +171,6 @@ const MainScreenController = ({
 
         BackgroundGeolocation.on('background', () => {
             console.log('[INFO] App is in background');
-            // Linking.canOpenURL('snapDriver://booking').then((e) => {
-
-            // });
-
-            LaunchApplication.open('com.snapdriver');
-
-            setTimeout(() => {
-                console.log('fuck');
-
-                // Linking.sendIntent('snapDriver://booking');
-            }, 5000);
         });
 
         BackgroundGeolocation.on('foreground', () => {
@@ -176,7 +203,7 @@ const MainScreenController = ({
             );
             console.log(
                 '[INFO] BackgroundGeolocation auth status: ' +
-                    status.authorization,
+                status.authorization,
             );
 
             // you don't need to check status before start (this is just the example)
@@ -190,6 +217,55 @@ const MainScreenController = ({
     };
 
     useEffect(() => {
+
+        // const intId = BackgroundTimer.setInterval(() => {
+        //     UpdateLocation({
+        //         lat: `${111}`,
+        //         lng: `${222}`,
+        //     });
+        //
+        // }, 10000);
+
+        const messaging = firebase();
+        messaging.setBackgroundMessageHandler(async (msg) => {
+            LaunchApplication.open('com.snapdriver');
+            if (driver.status && !driver.isBusy) {
+                SetDriverStatusOnline(
+                    {
+                        carId: car.id,
+                    },
+                    (bookingInfo) => {
+                        !driver.isBusy && NewOrder(bookingInfo);
+                    },
+                );
+            }
+        });
+        messaging.onMessage((msg) => {
+            if (driver.status && !driver.isBusy) {
+                SetDriverStatusOnline(
+                    {
+                        carId: car.id,
+                    },
+                    (bookingInfo) => {
+                        !driver.isBusy && NewOrder(bookingInfo);
+                    },
+                );
+            }
+
+            const notification: any = msg.data;
+
+            if (notification.title === 'message') {
+                SendPush({
+                    id: notification.data.notification_id,
+                    message: notification.message,
+                });
+            }
+
+            if (notification.title === 'coming') {
+                Alert.alert('Клиент', 'Клиент выходить');
+            }
+        });
+
         navigation.addListener('focus', () => {
             StatusBar.setBarStyle('dark-content');
             StatusBar.setBackgroundColor(colors.white);
@@ -200,45 +276,59 @@ const MainScreenController = ({
             SetNetConnection(state.isConnected && state.isInternetReachable);
         });
 
-        // setInterval(() => {
-        //     if (!driver.isBusy) {
-        //         Geolocation.getCurrentPosition(position => {
-        //             const {coords: {latitude, longitude}} = position;
-        //             UpdateLocation({
-        //                 lat: `${latitude}`,
-        //                 lng: `${longitude}`
-        //             })
-        //         })
-        //     }
-        // }, 10000);
-
-        // setIntervalId(null);
-
         configureBackgroundGeolocation();
 
-        PushNotification.configure({
-            onNotification: (notification: any) => {
-                if (notification.title === 'message') {
-                    SendPush({
-                        id: notification.data.notification_id,
-                        message: notification.message,
-                    });
+        if (newOrder.data.id && newOrder.data.status !== 'new') {
+            GetOrderInfo(newOrder.data.id, () => {
+                return {
+                    cb: (data) => {
+                        ChangeOrderStatus(data);
+                        navigation.reset({
+                            index: 0,
+                            routes: [{name: SCREENS.TRIP}]
+                        })
+                    },
+                    socketCb: (data) => {
+                        ChangeOrderStatus(data)
+                    }
                 }
-            },
-            permissions: {
-                alert: true,
-                badge: true,
-                sound: true,
-            },
-            popInitialNotification: true,
-            requestPermissions: true,
-        });
-        // return () => clearInterval(intervalId);
+            })
+        } else {
+            Reset()
+        }
+
+        // return BackgroundTimer.clearInterval(intId);
+
     }, []);
 
     const routeTo = (screen: string) => () => {
         navigation.navigate(screen);
     };
+
+    // useEffect(() => {
+    //     AppState.addEventListener("change", state => {
+    //         if (state === 'active') {
+    //             if (order.id && order.status !== 'new') {
+    //                 GetOrderInfo(order.id, () => {
+    //                     return {
+    //                         cb: (data) => {
+    //                             ChangeOrderStatus(data);
+    //                             navigation.reset({
+    //                                 index: 0,
+    //                                 routes: [{name: 'Trip'}]
+    //                             })
+    //                         },
+    //                         socketCb: (data) => {
+    //                             ChangeOrderStatus(data)
+    //                         }
+    //                     }
+    //                 })
+    //             }
+    //         } else if (state === 'background') {
+    //
+    //         }
+    //     });
+    // }, []);
 
     const changeDriverStatus = () => {
         if (driver.status) {

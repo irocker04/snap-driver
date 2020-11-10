@@ -3,36 +3,15 @@ import {Provider} from 'react-redux';
 import AppNavigator from './src/navigation/AppNavigator';
 import {PersistGate} from 'redux-persist/lib/integration/react';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
-
 import createStore from './src/store/createStore';
 import api from './src/services/api';
-import {Linking} from 'react-native';
+
 
 const {store, persistor} = createStore();
 
-const useMount = (func) => useEffect(() => func(), []);
-
-const useInitialURL = () => {
-    const [url, setUrl] = useState(null);
-    const [processing, setProcessing] = useState(true);
-
-    useMount(() => {
-        const getUrlAsync = async () => {
-            // Get the deep link used to open the app
-            const initialUrl = await Linking.getInitialURL();
-
-            // The setTimeout is just for testing purpose
-            setTimeout(() => {
-                setUrl(initialUrl);
-                setProcessing(false);
-            }, 1000);
-        };
-
-        getUrlAsync();
-    });
-
-    return {url, processing};
-};
+// AppRegistry.registerHeadlessTask('ReactNativeFirebaseMessagingHeadlessTask', () => async () => {
+//
+// });
 
 const App = () => {
     useEffect(() => {
@@ -57,15 +36,10 @@ const App = () => {
             });
     }, []);
 
-    const {url: initialUrl, processing} = useInitialURL();
-
-    useEffect(() => {
-        console.log('CHANGED URL: ' + initialUrl);
-    }, [initialUrl]);
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                <AppNavigator />
+                <AppNavigator/>
             </PersistGate>
         </Provider>
     );

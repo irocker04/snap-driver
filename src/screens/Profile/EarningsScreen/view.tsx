@@ -75,36 +75,36 @@ const EarningsScreenView = ({statistics, balance, changePeriod}: any) => {
                         )}
                     />
                 </View>
-                <View style={[styles.card, constStyles.wideShadow]}>
-                    <View style={[styles.row, styles.borderBottom]}>
-                        <View style={styles.rowLeft}>
-                            <Text
-                                style={[styles.rowTitle, constStyles.bold]}>
-                                {strings.balance}:{' '}
-                            </Text>
-                            <Text
-                                style={[styles.rowPrice, constStyles.bold]}>
-                                {balance}{' '}
-                            </Text>
-                            <Text
-                                style={[
-                                    styles.rowPrice,
-                                    constStyles.light,
-                                ]}>
-                                сум
-                            </Text>
-                        </View>
-                        <View>
-                            <Icon
-                                name="curveDown"
-                                size={9}
-                                color={colors.blue}
-                                style={{paddingBottom: 3}}
-                            />
-                            <Icon name="curveUp" size={9}/>
-                        </View>
-                    </View>
-                </View>
+                {/*<View style={[styles.card, constStyles.wideShadow]}>*/}
+                {/*    <View style={[styles.row, styles.borderBottom]}>*/}
+                {/*        <View style={styles.rowLeft}>*/}
+                {/*            <Text*/}
+                {/*                style={[styles.rowTitle, constStyles.bold]}>*/}
+                {/*                {strings.balance}:{' '}*/}
+                {/*            </Text>*/}
+                {/*            <Text*/}
+                {/*                style={[styles.rowPrice, constStyles.bold]}>*/}
+                {/*                {balance}{' '}*/}
+                {/*            </Text>*/}
+                {/*            <Text*/}
+                {/*                style={[*/}
+                {/*                    styles.rowPrice,*/}
+                {/*                    constStyles.light,*/}
+                {/*                ]}>*/}
+                {/*                сум*/}
+                {/*            </Text>*/}
+                {/*        </View>*/}
+                {/*        <View>*/}
+                {/*            <Icon*/}
+                {/*                name="curveDown"*/}
+                {/*                size={9}*/}
+                {/*                color={colors.blue}*/}
+                {/*                style={{paddingBottom: 3}}*/}
+                {/*            />*/}
+                {/*            <Icon name="curveUp" size={9}/>*/}
+                {/*        </View>*/}
+                {/*    </View>*/}
+                {/*</View>*/}
                 {/*<ChooseCard/>*/}
             </View>
         </ScrollView>
