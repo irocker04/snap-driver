@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
+import * as Sentry from "@sentry/react-native";
 import {Provider} from 'react-redux';
 import AppNavigator from './src/navigation/AppNavigator';
 import {PersistGate} from 'redux-persist/lib/integration/react';
@@ -6,15 +7,17 @@ import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import createStore from './src/store/createStore';
 import api from './src/services/api';
 
-
 const {store, persistor} = createStore();
 
-// AppRegistry.registerHeadlessTask('ReactNativeFirebaseMessagingHeadlessTask', () => async () => {
-//
-// });
+export {store};
 
 const App = () => {
     useEffect(() => {
+        if (!__DEV__) {
+            Sentry.init({
+                dsn: "https://437523adc34d48efa65180f5add9d014@o477461.ingest.sentry.io/5518383",
+            });
+        }
         api.setToken(store);
         RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
             interval: 10000,

@@ -10,7 +10,8 @@ const mapStateToProps = ({booking: {newOrder}}: any) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
     RateOrder: booking.RateOrder,
-    SkipNewOrder: booking.SkipNewOrder
+    SkipNewOrder: booking.SkipNewOrder,
+    Reset: booking.Reset
 }, dispatch);
 
 export default connect(

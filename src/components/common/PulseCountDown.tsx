@@ -30,10 +30,15 @@ const PulseCountDown = (
     useEffect(() => {
         // @ts-ignore
         progressCircle.current.animate('100', time * 1000);
-        BackgroundTimer.setTimeout(onPress, time * 1000);
         const intId = BackgroundTimer.setInterval(() => setSec(prevState => prevState + 1), 1000)
         return () => BackgroundTimer.clearInterval(intId);
     }, []);
+
+    useEffect(() => {
+        if  (sec === 15) {
+            onPress()
+        }
+    }, [sec])
 
     return (
         <View style={styles.container}>

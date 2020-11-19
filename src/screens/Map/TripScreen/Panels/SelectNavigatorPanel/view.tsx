@@ -58,7 +58,7 @@ const SelectNavigatorPanelView = (
                     </View>
                 </View>
                 <Button
-                    onPress={changeOrderStatus}
+                    onLongPress={changeOrderStatus}
                     text={strings.atPoint as string}
                     isLoading={isLoading}
                 />

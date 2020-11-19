@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Image, View} from 'react-native';
-import MapView, {Marker, Polyline, PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, {Marker, Polyline, PROVIDER_GOOGLE, Callout} from 'react-native-maps';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import colors from '@constants/colors';
 import Icon from '@assets/icons';
@@ -35,6 +35,9 @@ let Map = (
             <MapView
                 followsUserLocation
                 showsUserLocation
+                onUserLocationChange={(event) => {
+                    onUserLocationChange(event.nativeEvent.coordinate)
+                }}
                 ref={ref => setMapRef(ref)}
                 style={styles.map}
                 showsBuildings

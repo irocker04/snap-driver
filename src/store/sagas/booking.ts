@@ -4,6 +4,7 @@ import Echo from "laravel-echo";
 
 import api from "../../services/api";
 import * as Booking from "../constants/booking";
+import {store} from "../../../App";
 
 let echo: any;
 
@@ -63,7 +64,7 @@ function* SetDriverStatusOffline(action: any) {
 
 function* NewOrder(action: any) {
     try {
-
+        // console.log({driver: store.getState().booking.driver})
         yield put({
             type: Booking.NewOrder.SUCCESS,
             payload: action.payload

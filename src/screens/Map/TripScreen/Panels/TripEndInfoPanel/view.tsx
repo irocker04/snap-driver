@@ -8,11 +8,12 @@ import {strings} from "@constants/index";
 interface IProps {
     changeOrderStatus: () => void;
     newOrder: any;
+    distance: any;
     waitingTime: string;
     duration: string;
 }
 
-const TripEndInfoPanelView = ({changeOrderStatus, newOrder, duration, waitingTime}: IProps) => {
+const TripEndInfoPanelView = ({changeOrderStatus, newOrder, duration, waitingTime, distance}: IProps) => {
     return (
         <View>
             <HatCutout style={styles.hatCutOut}/>
@@ -35,6 +36,10 @@ const TripEndInfoPanelView = ({changeOrderStatus, newOrder, duration, waitingTim
                 <View style={styles.durationWrapper}>
                     <Text style={styles.text}>Время ожидание</Text>
                     <Text style={styles.text}>{waitingTime} мин</Text>
+                </View>
+                <View style={styles.durationWrapper}>
+                    <Text style={styles.text}>Дистанция</Text>
+                    <Text style={styles.text}>{distance} км</Text>
                 </View>
                 <Button
                     onPress={changeOrderStatus}

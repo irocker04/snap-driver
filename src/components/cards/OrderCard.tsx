@@ -51,7 +51,17 @@ const OrderCard = ({item}: OrderCardProps) => {
                 <Text style={[styles.price, constStyles.light]}>{strings.price}:{' '}</Text>
                 <Text style={[styles.priceNum, constStyles.bold]}>{item.price} </Text>
                 <Text style={[styles.currency, constStyles.light]}>cум{' '}</Text>
+            </View>
+            <View style={[styles.priceWrapper, styles.borderBottom]}>
+                <Text style={[styles.price, constStyles.light]}>Комиссия:{' '}</Text>
+                {/*<Text style={[styles.priceNum, constStyles.bold]}>{item.commission / item.price * 100}%</Text>*/}
+                <Text style={[styles.priceNum, constStyles.bold]}>5%</Text>
+                <Text style={[styles.currency, constStyles.light]}>cум{' '}</Text>
                 <Text style={[styles.price, constStyles.light]}>({item.commission}) сум</Text>
+            </View>
+            <View style={[styles.priceWrapper, styles.borderBottom]}>
+                <Text style={[styles.price, constStyles.light]}>Дистанция:{' '}</Text>
+                <Text style={[styles.priceNum, constStyles.bold]}>{item.distance} км</Text>
             </View>
             <View style={[styles.paymentType, styles.borderBottom]}>
                 <Icon
@@ -68,10 +78,10 @@ const OrderCard = ({item}: OrderCardProps) => {
                     }
                 </Text>
             </View>
-            <Button
-                text={strings.complain}
-                onPress={() => null}
-            />
+            {/*<Button*/}
+            {/*    text={strings.complain}*/}
+            {/*    onPress={() => null}*/}
+            {/*/>*/}
         </View>
     );
 };

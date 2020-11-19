@@ -51,8 +51,8 @@ const TripHeader = (
                                     <Text style={[styles.topText, constStyles.bold, headerStyles]}>{' '}{topData}</Text>
                                 </View>
                                 <View style={styles.bottomWrapper}>
-                                    <Text style={[styles.bottomText, constStyles.bold]}>{bottomTitle}:</Text>
-                                    <Text style={[styles.bottomText, constStyles.bold]}>{' '}{bottomData}</Text>
+                                    {/*<Text style={[styles.bottomText, constStyles.bold]}>{bottomTitle}:</Text>*/}
+                                    {/*<Text style={[styles.bottomText, constStyles.bold]}>{' '}{bottomData}</Text>*/}
                                 </View>
                             </View>
                         }
@@ -70,7 +70,11 @@ const TripHeader = (
                                 <View style={[styles.iconWrapper, constStyles.shadow]}>
                                     <TouchablePlatformSpecific onPress={cancelOrder}>
                                         <View style={styles.icon}>
-                                            <Icon name="phone" color={colors.white} size={20}/>
+                                            <Text
+                                                style={{color: '#fff', fontSize: 15}}
+                                            >
+                                                Х
+                                            </Text>
                                         </View>
                                     </TouchablePlatformSpecific>
                                 </View>

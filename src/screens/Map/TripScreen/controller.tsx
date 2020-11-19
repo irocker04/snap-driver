@@ -129,8 +129,22 @@ const TripScreenController = (
         })
     };
 
+    const setTime = (time: number) => {
+        return `${pad(parseInt(String(time / 60)))}:${pad(time % 60)}`
+    };
+
+    const pad = (val: number) => {
+        const valString = val + "";
+        if (valString.length < 2) {
+            return "0" + valString;
+        } else {
+            return valString;
+        }
+    };
+
     return (
         <TripScreenView
+            waiting={setTime(waiting.time)}
             cancelOrder={cancelOrder}
             orderStatus={orderStatus}
             orderInfo={newOrder.data}

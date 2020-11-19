@@ -42,7 +42,7 @@ export default (state = initialState, action: any) => {
             return {
                 ...state,
                 driver: {
-                    isBusy: false,
+                    ...state.driver,
                     status: true
                 }
             };
@@ -71,9 +71,11 @@ export default (state = initialState, action: any) => {
                     }
                 }
             } else {
-                return state
+                console.log(state.driver.isBusy);
+                return state;
             }
         }
+
         case SkipNewOrder.REQUEST: {
             return {
                 ...state,
@@ -136,6 +138,10 @@ export default (state = initialState, action: any) => {
             } else {
                 return {
                     ...state,
+                    driver: {
+                        ...state.driver,
+                        isBusy: true
+                    },
                     newOrder: {
                         data: action.payload,
                         isModalVisible: false,
@@ -181,6 +187,10 @@ export default (state = initialState, action: any) => {
                 messages: initialState.messages,
                 waiting: initialState.waiting,
                 tripInfo: initialState.tripInfo,
+                driver: {
+                    isBusy: false,
+                    status: true,
+                },
             }
         }
         case SetTripInfo.SUCCESS: {

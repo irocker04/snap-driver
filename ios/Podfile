@@ -100,6 +100,8 @@ target 'snapDriver' do
 
   pod 'react-native-background-timer', :path => '../node_modules/react-native-background-timer'
 
+  pod 'RNSentry', :path => '../node_modules/@sentry/react-native'
+
   target 'snapDriverTests' do
     inherit! :complete
     # Pods for testing

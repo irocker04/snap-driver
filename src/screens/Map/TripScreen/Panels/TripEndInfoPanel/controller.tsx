@@ -1,7 +1,6 @@
 import React from 'react';
 import TripEndInfoPanelView from "./view";
 import IAction from "@store/types/IAction";
-import SCREENS from "@constants/screens";
 
 interface IProps {
     ChangeOrderStatus: IAction;
@@ -42,6 +41,7 @@ const TripEndInfoPanelPanelController = (
         <TripEndInfoPanelView
             changeOrderStatus={changeOrderStatus}
             newOrder={newOrder}
+            distance={(tripInfo.distance / 1000).toFixed(2)}
             waitingTime={setTime(waiting.time)}
             duration={setTime(tripInfo.duration)}
         />

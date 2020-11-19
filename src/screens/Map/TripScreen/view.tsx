@@ -23,6 +23,7 @@ interface IProps {
     destination: any;
     distanceToClient: any;
     isPayedWaiting: boolean;
+    waiting: string,
 }
 
 const TripScreenView = (
@@ -31,7 +32,8 @@ const TripScreenView = (
         destination,
         distanceToClient,
         isPayedWaiting,
-        cancelOrder
+        cancelOrder,
+        waiting
     }: IProps) => {
 
     const renderPanel = () => {
@@ -63,6 +65,7 @@ const TripScreenView = (
                 return {
                     headerTitle: strings.acceptedOrder,
                     title: strings.waitingTime,
+                    data: waiting,
                     styles: {
                         color: isPayedWaiting ? 'red' : 'green'
                     }
