@@ -15,19 +15,37 @@ interface IProps {
     isLoading: boolean;
     drivingFrom: string;
     openGoogleMaps: () => void;
+    callToClient: () => void;
 }
 
-const SelectNavigatorPanelView = ({changeOrderStatus, isLoading, drivingFrom, openGoogleMaps}: IProps) => {
+const SelectNavigatorPanelView = (
+    {
+        changeOrderStatus,
+        isLoading,
+        drivingFrom,
+        openGoogleMaps,
+        callToClient,
+    }: IProps) => {
     return (
         <View>
             <HatCutout style={styles.hatCutOut}/>
             <View style={styles.wrapper}>
-                <View style={styles.innerWrapper}>
+                <View style={[styles.innerWrapper, {marginBottom: 20}]}>
                     <Text style={styles.selectNavigatorText}>{strings.selectNavigator}</Text>
                     <View style={styles.iconWrapper}>
                         <TouchablePlatformSpecific onPress={openGoogleMaps}>
                             <View style={styles.icon}>
                                 <Icon name="locationFancy" size={20} color={colors.blue}/>
+                            </View>
+                        </TouchablePlatformSpecific>
+                    </View>
+                </View>
+                <View style={[styles.innerWrapper, {marginBottom: 20}]}>
+                    <Text style={styles.selectNavigatorText}>Позвонит клиенту</Text>
+                    <View style={styles.iconWrapper}>
+                        <TouchablePlatformSpecific onPress={callToClient}>
+                            <View style={styles.icon}>
+                                <Icon name="phone" size={20} color={colors.blue}/>
                             </View>
                         </TouchablePlatformSpecific>
                     </View>
@@ -40,8 +58,8 @@ const SelectNavigatorPanelView = ({changeOrderStatus, isLoading, drivingFrom, op
                     </View>
                 </View>
                 <Button
-                    onPress={changeOrderStatus}
-                    text={strings.atPoint}
+                    onLongPress={changeOrderStatus}
+                    text={strings.atPoint as string}
                     isLoading={isLoading}
                 />
             </View>

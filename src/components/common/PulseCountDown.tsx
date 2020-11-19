@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import PulseLoader from '../lotties/PulseLoader';
 import colors from '@constants/colors';
@@ -8,6 +8,7 @@ import TouchablePlatformSpecific from './TouchablePlatformSpecific';
 import CountDown from 'react-native-countdown-component';
 import constStyles from '@constants/constStyles';
 import {deviceHeight} from '@constants/values';
+import BackgroundTimer from 'react-native-background-timer';
 
 interface PulseCountDownProps {
     time: number;
@@ -22,13 +23,22 @@ const PulseCountDown = (
         title,
         name,
         onPress,
-    }: PulseCountDownProps) => {
+    }: PulseCountDownProps
+) => {
     const progressCircle = useRef(null);
-
+    const [sec, setSec] = useState(0);
     useEffect(() => {
         // @ts-ignore
         progressCircle.current.animate('100', time * 1000);
+        const intId = BackgroundTimer.setInterval(() => setSec(prevState => prevState + 1), 1000)
+        return () => BackgroundTimer.clearInterval(intId);
     }, []);
+
+    useEffect(() => {
+        if  (sec === 15) {
+            onPress()
+        }
+    }, [sec])
 
     return (
         <View style={styles.container}>
@@ -54,21 +64,16 @@ const PulseCountDown = (
                     <TouchablePlatformSpecific onPress={onPress}>
                         <View style={styles.countDownWrapper}>
                             <Text numberOfLines={1} style={[styles.title, constStyles.light]}>{title}</Text>
-                            <CountDown
-                                until={time}
-                                size={20}
-                                onFinish={onPress}
-                                digitStyle={{
-                                    backgroundColor: colors.transparent,
-                                    width: 30,
-                                    height: 10,
+                            <View style={{paddingVertical: 20, paddingBottom: 10}}>
+                                <Text style={{
+                                    fontSize: 30,
+                                    color: colors.blue,
+                                    ...constStyles.semibold
                                 }}
-                                separatorStyle={{color: colors.blue}}
-                                digitTxtStyle={{color: colors.blue}}
-                                timeToShow={['M', 'S']}
-                                timeLabels={{m: null, s: null}}
-                                showSeparator
-                            />
+                                >
+                                    {15 - sec}
+                                </Text>
+                            </View>
                             <Text
                                 numberOfLines={1}
                                 style={[styles.name, constStyles.medium]}>

@@ -7,10 +7,11 @@ import SCREENS from "@constants/screens";
 interface IProps {
     RateOrder: IAction;
     SkipNewOrder: IAction;
+    Reset: IAction;
     newOrder: any;
 }
 
-const RatePassengerPanelController = ({RateOrder, newOrder, SkipNewOrder}: IProps) => {
+const RatePassengerPanelController = ({RateOrder, newOrder, SkipNewOrder, Reset}: IProps) => {
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -28,8 +29,11 @@ const RatePassengerPanelController = ({RateOrder, newOrder, SkipNewOrder}: IProp
             rating: rate
         }, () => {
             setIsLoading(false);
-            SkipNewOrder();
-            navigation.navigate(SCREENS.MAP);
+            Reset()
+            navigation.reset({
+                index: 0,
+                routes: [{name: SCREENS.MAIN_STACK}]
+            })
         })
     };
 

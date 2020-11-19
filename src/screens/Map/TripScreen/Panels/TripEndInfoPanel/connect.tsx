@@ -4,8 +4,10 @@ import {connect} from "react-redux";
 import TripEndInfoPanelPanelController from "./controller";
 import {ChangeOrderStatus} from "@store/constants/booking";
 
-const mapStateToProps = ({booking: {newOrder}}: any) => ({
-    newOrder: newOrder.data
+const mapStateToProps = ({booking: {newOrder, waiting, tripInfo}}: any) => ({
+    newOrder: newOrder.data,
+    waiting,
+    tripInfo,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => {

@@ -3,20 +3,15 @@ import colors from "@constants/colors";
 import constStyles from "@constants/constStyles";
 
 export default StyleSheet.create({
-
-    hatCutOut: {
-        width: '100%',
-        height: 15,
+    container: {
+        backgroundColor: colors.grey,
+        flex: 1,
     },
     wrapper: {
         backgroundColor: colors.grey,
         padding: 15,
         paddingBottom: 20,
-        borderWidth: 2,
         borderColor: colors.white,
-        borderTopWidth: 0,
-        borderBottomStartRadius: 15,
-        borderBottomEndRadius: 15,
     },
     innerWrapper: {
         paddingTop: 10,
@@ -32,22 +27,13 @@ export default StyleSheet.create({
         fontSize: 14,
         ...constStyles.light,
     },
-    dragIcon: {
-        borderWidth: 2,
-        borderRadius: 10,
-        borderColor: colors.grayText,
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignSelf: 'center',
-        marginTop: 10,
-        width: 30,
-    },
     bottomWrapper: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         paddingVertical: 10,
         paddingBottom: 20,
         backgroundColor: colors.grey,
+        marginBottom: 40,
     },
     bottomIconWrapper: {
         width: 56,
@@ -97,11 +83,83 @@ export default StyleSheet.create({
         alignItems: 'center',
     },
     info: {
-        color: '#AAAEB7',
-        fontSize: 14,
-        ...constStyles.light,
+        flexDirection: 'row',
+        justifyContent: 'space-evenly'
     },
     infoWrapper: {
         paddingLeft: 10
+    },
+    rate: {
+        ...constStyles.semibold,
+        fontSize: 20,
+        marginTop: 20,
+    },
+    price: {
+        ...constStyles.bold,
+        fontSize: 35,
+        color: colors.blue
+    },
+    infoText: {
+        fontSize: 16
+    },
+    textColor: {
+        color: '#aaaeb7',
+    },
+    directionText: {
+        fontSize: 16,
+    },
+    circle: {
+        width: 8,
+        height: 8,
+        backgroundColor: colors.blue,
+        borderRadius: 100
+    },
+    addressCircle: {
+        width: 15,
+        height: 15,
+        backgroundColor: colors.blue,
+        borderRadius: 100,
+        marginRight: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    innerCircle: {
+        width: 8,
+        height: 8,
+        backgroundColor: '#fff',
+        borderRadius: 100,
+    },
+    icons: {
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 30,
+        marginTop: 3
+    },
+    smallCircle: {
+        width: 3,
+        height: 3,
+        backgroundColor: '#B6C5EE',
+        borderRadius: 100
+    },
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+        marginTop: 20,
+    },
+    direction: {
+        marginHorizontal: 20,
+        borderColor: colors.paleGray,
+        borderBottomWidth: 1,
+        borderTopWidth: 1,
+        marginBottom: 20,
+    },
+    waiting: {
+        marginHorizontal: 20,
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+    },
+    waitingText: {
+        fontSize: 18
     }
 })

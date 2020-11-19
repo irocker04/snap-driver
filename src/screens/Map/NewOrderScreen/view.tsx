@@ -32,7 +32,7 @@ const NewOrderScreenView = ({
                         onPress={skipNewOrder}
                         name={strings.skip}
                         title={strings.order}
-                        time={10}
+                        time={15}
                     />
                     <View style={[styles.section, styles.bottomBorder]}>
                         <View style={styles.left}>

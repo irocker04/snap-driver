@@ -17,11 +17,6 @@ interface IScreenProps {
 
 const screens: IScreenProps[] = [
     {
-        label: null,
-        name: SCREENS.MAIN_STACK,
-        component: MainStack
-    },
-    {
         label: strings.earnings,
         name: SCREENS.EARNINGS_STACK,
         component: EarningsStack,

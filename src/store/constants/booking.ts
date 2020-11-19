@@ -12,7 +12,9 @@ const SetNetConnection = createActionTypes('SET_NET_CONNECTION');
 const GetOrderList = createActionTypes('GET_ORDER_LIST');
 const RateOrder = createActionTypes('RATE_ORDER');
 const SendPush = createActionTypes('SEND_PUSH');
-
+const GetOrderInfo = createActionTypes('GET_ORDER_INFO');
+const Reset = createActionTypes('RESET');
+const SetTripInfo = createActionTypes('SET_TRIP_INFO');
 
 export {
     SetDriverStatusOnline,
@@ -27,4 +29,7 @@ export {
     GetOrderList,
     RateOrder,
     SendPush,
+    GetOrderInfo,
+    Reset,
+    SetTripInfo,
 }

@@ -2,14 +2,13 @@ import colors from '@constants/colors';
 import {useNavigation} from '@react-navigation/native';
 import IAction from '@store/types/IAction';
 import React, {useEffect, useState} from 'react';
-import {Alert, AppState, StatusBar} from 'react-native';
+import {Alert, StatusBar} from 'react-native';
 import {
     useBlurOnFulfill,
     useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 import EnterCodeView from './view';
 
-// const PushNotification = require("react-native-push-notification");
 import PushNotification from 'react-native-push-notification';
 
 interface IProps {
@@ -53,17 +52,6 @@ const EnterCodeScreenController = ({
                 setFcmToken(data.token);
             },
             onNotification: (notification: any) => {
-                console.log('Background ');
-                if (notification.title === 'message') {
-                    SendPush({
-                        id: notification.data.notification_id,
-                        message: notification.message,
-                    });
-                }
-
-                if (notification.title === 'coming') {
-                    Alert.alert('Клиент', 'Клиент выходить');
-                }
             },
             permissions: {
                 alert: true,

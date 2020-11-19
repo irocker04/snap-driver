@@ -29,7 +29,10 @@ export default StyleSheet.create({
         overflow: 'hidden',
     },
     icon: {
-        padding: 10,
-        backgroundColor: colors.white,
+        width: 40,
+        height: 40,
+        backgroundColor: colors.red,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
 });

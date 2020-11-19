@@ -39,12 +39,17 @@ const SelectNavigatorPanelController = ({ChangeOrderStatus, newOrder}: IProps) =
         })
     };
 
+    const callToClient = async () => {
+        await Linking.openURL(`tel:+${newOrder.user.phone}`)
+    };
+
     return (
         <SelectNavigatorPanelView
             changeOrderStatus={changeOrderStatus}
             isLoading={isLoading}
-            drivingFrom={newOrder.routes[0].address}
+            drivingFrom={newOrder?.routes[0]?.address}
             openGoogleMaps={openGoogleMaps}
+            callToClient={callToClient}
         />
 
     );

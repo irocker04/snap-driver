@@ -35,9 +35,12 @@ export default StyleSheet.create({
         ...constStyles.light
     },
     icon: {
-        padding: 10,
-        paddingHorizontal: 14,
         backgroundColor: colors.white,
+        width: 40,
+        height: 40,
+        borderRadius: 100,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     iconWrapper: {
         ...constStyles.shadow,

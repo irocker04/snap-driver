@@ -1,40 +1,52 @@
 import React from 'react';
-import {
-    createStackNavigator,
-} from "@react-navigation/stack";
-
-import SCREENS from "@constants/screens";
-import {SupportScreen, SupportCategoryScreen} from "../../screens/Profile";
-import Header from "@components/navigation/Header";
-import {colors, strings} from "@constants/index";
+import PageHeader from "@components/navigation/Header";
+import {CardStyleInterpolators, createStackNavigator} from "@react-navigation/stack";
+import Colors from "@constants/colors";
+import SupportScreen from "../../screens/SupportScreen/SupportScreen";
+import SupportCategoryScreen from "../../screens/SupportCategoryScreen";
+import SupportChatScreen from "../../screens/SupportChatScreen/SupportChatScreen";
 
 const {Navigator, Screen} = createStackNavigator();
 
 const SupportStack = () => (
     <Navigator
         screenOptions={{
-            cardStyle: {backgroundColor: colors.grey}
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}
     >
         <Screen
-            name={SCREENS.SUPPORT}
+            name="SupportStack"
             component={SupportScreen}
             options={{
-                header: () => <Header
-                    title={strings.supportService}
-                />
+                header: (props) => <PageHeader
+                    title={"Поддержка"}
+                    {...props}
+                />,
+                cardStyle: {backgroundColor: Colors.grey}
             }}
         />
         <Screen
-            name={SCREENS.SUPPORT_CATEGORY}
+            name="SupportCategory"
             component={SupportCategoryScreen}
             options={{
-                header: () => <Header
-                    title={strings.earnings}
-                />
+                header: (props) => <PageHeader
+                    title={"Остались вещи"}
+                    {...props}
+                />,
+                cardStyle: {backgroundColor: Colors.grey}
+            }}
+        />
+        <Screen
+            name="SupportChat"
+            component={SupportChatScreen}
+            options={{
+                header: (props) => <PageHeader
+                    title={"Служба поддержки"}
+                    {...props}
+                />,
+                cardStyle: {backgroundColor: Colors.grey}
             }}
         />
     </Navigator>
 );
-
 export default SupportStack;

@@ -4,6 +4,7 @@ import {createDrawerNavigator} from "@react-navigation/drawer";
 import {screens, IScreenProps} from "./screens";
 import colors from "@constants/colors";
 import SCREENS from "@constants/screens";
+import MainStack from "../StackNavigators/MainStack";
 
 const {Navigator, Screen} = createDrawerNavigator();
 
@@ -18,6 +19,13 @@ const DrawerStack = () => (
         initialRouteName={SCREENS.MAIN_STACK}
         sceneContainerStyle={{backgroundColor: colors.grey}}
     >
+        <Screen
+            name={SCREENS.MAIN_STACK}
+            component={MainStack}
+            options={{
+                unmountOnBlur: false
+            }}
+        />
         {
             screens.map((screen: IScreenProps, index) => (
                     screen.component && <Screen

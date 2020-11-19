@@ -76,7 +76,7 @@ const DestinationDetailsPanelView = (
                     </View>
                 </Animated.View>
                 <Button
-                    onPress={changeOrderStatus}
+                    onLongPress={changeOrderStatus}
                     text={strings.letsGo as string}
                     isLoading={isLoading}
                 />

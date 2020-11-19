@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, View, FlatList, Alert} from 'react-native';
+import {Text, View, FlatList, Alert, Animated} from 'react-native';
 import {connect, useDispatch, useSelector} from "react-redux";
 // @ts-ignore
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -33,7 +33,7 @@ const DrawerContent = (props: any) => {
 
     const [avatar, setAvatar] = useState(user.avatar);
     const [isLoading, setIsLoading] = useState(false);
-
+    const [rotateVal, setRotateVal] = useState(new Animated.Value(0));
     const handleSubmit = (ava: any) => {
         setIsLoading(true);
         const formData = new FormData();
@@ -49,6 +49,26 @@ const DrawerContent = (props: any) => {
             }
         )
     };
+
+    const updateProfile = () => {
+        rotate();
+        props.UpdateProfile(null, () => {
+                setIsLoading(false);
+                rotateVal.setValue(0);
+            }, () => {
+                setIsLoading(false);
+            }
+        )
+    }
+
+    const rotate = () => {
+        rotateVal.setValue(0);
+        Animated.timing(rotateVal, {
+            duration: 5000,
+            toValue: 360,
+            useNativeDriver: true,
+        }).start()
+    }
 
     return (
         <View style={styles.container}>
@@ -82,15 +102,17 @@ const DrawerContent = (props: any) => {
                             сум
                         </Text>
                     </View>
-                    <View>
-                        <Icon
-                            name="curveDown"
-                            size={9}
-                            color={colors.blue}
-                            style={{paddingBottom: 3}}
-                        />
-                        <Icon name="curveUp" size={9}/>
-                    </View>
+                    <Animated.View style={{transform: [{rotate: rotateVal}]}}>
+                        <TouchableOpacity onPress={updateProfile}>
+                            <Icon
+                                name="curveDown"
+                                size={9}
+                                color={colors.blue}
+                                style={{paddingBottom: 3}}
+                            />
+                            <Icon name="curveUp" size={9}/>
+                        </TouchableOpacity>
+                    </Animated.View>
                 </View>
             </View>
             <View style={styles.activity}>
@@ -141,18 +163,6 @@ const DrawerContent = (props: any) => {
                     keyExtractor={(item) => item.name}
                 />
             </View>
-            <TouchablePlatformSpecific onPress={logout}>
-                <View
-                    style={{
-                        paddingTop: 40,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}>
-                    <View style={[styles.logoutWrapper, constStyles.shadow]}>
-                        <AntDesign name="logout" size={25} color={colors.blue}/>
-                    </View>
-                </View>
-            </TouchablePlatformSpecific>
         </View>
     );
 };

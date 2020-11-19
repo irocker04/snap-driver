@@ -8,7 +8,8 @@ import TouchablePlatformSpecific from "../TouchablePlatformSpecific";
 interface IProps {
     text: string;
     containerStyle?: ViewStyle;
-    onPress: () => void,
+    onPress?: () => void,
+    onLongPress?: () => void,
     fontSize?: number;
     isLoading?: boolean;
     disabled?: boolean,
@@ -23,11 +24,16 @@ const Button = (
         onPress,
         fontSize,
         isLoading = false,
-        disabled = false
+        disabled = false,
+        onLongPress
     }: IProps) => {
     return (
         <View style={[styles.button, disabled && styles.disabled, containerStyle]}>
-            <TouchablePlatformSpecific onPress={onPress} disabled={isLoading || disabled}>
+            <TouchablePlatformSpecific
+                onPress={onPress}
+                onLongPress={onLongPress}
+                disabled={isLoading || disabled}
+            >
                 <View style={styles.wrapper}>
                     {
                         !isLoading

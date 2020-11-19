@@ -58,7 +58,7 @@ const CountDownButton = ({
                             },
                         ]}>
                         <CountDown
-                            until={time}
+                            until={50}
                             size={22}
                             onFinish={() => {
                                 setShowDetails(false);
