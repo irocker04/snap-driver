@@ -59,8 +59,8 @@ const RatePassengerPanelView = (
                     />
                 </View>
                 <Button
-                    onPress={rateOrder}
-                    text={strings.finish}
+                    onLongPress={rateOrder}
+                    text={strings.finish as string}
                     isLoading={isLoading}
                 />
             </View>

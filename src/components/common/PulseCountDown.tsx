@@ -35,7 +35,7 @@ const PulseCountDown = (
     }, []);
 
     useEffect(() => {
-        if  (sec === 15) {
+        if (sec === 15) {
             onPress()
         }
     }, [sec])

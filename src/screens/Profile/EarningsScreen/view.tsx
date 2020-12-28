@@ -3,26 +3,17 @@ import {
     Text,
     View,
     ScrollView,
-    StatusBar,
 } from 'react-native';
 import strings from '@constants/strings';
 import HeaderTab from '@components/navigation/HeaderTab';
-import colors from '@constants/colors';
 import BubleCutout from '@components/common/Buble';
 import HatCutout from '@components/common/HatCutout';
 import constStyles from '@constants/constStyles';
-import Icon from '@assets/icons';
 import {FlatList} from 'react-native-gesture-handler';
-import ChooseCard from '@components/cards/ChooseCard';
 import styles from "./styles";
 
 
 const EarningsScreenView = ({statistics, balance, changePeriod}: any) => {
-
-    useEffect(() => {
-        StatusBar.setBarStyle('light-content');
-        StatusBar.setBackgroundColor(colors.blue);
-    }, []);
 
     return (
         <ScrollView contentContainerStyle={{flexGrow: 1}}>

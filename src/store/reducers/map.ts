@@ -1,10 +1,7 @@
 import {GetCurrentLocation, SetDestination, SetDestinationDetails, SetNetConnection} from "../constants/map";
 
 const initialState = {
-    currentLocation: {
-        latitude: 41.3139328,
-        longitude: 69.2755859
-    },
+    currentLocation: {},
     destination: {
         details: {}
     },
@@ -35,6 +32,9 @@ export default (state = initialState, action: any) => {
                 ...state,
                 isNetConnected: action.payload
             };
+        case 'LOGOUT': {
+            return  initialState;
+        }
         default:
             return state
     }

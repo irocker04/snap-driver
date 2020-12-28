@@ -1,11 +1,12 @@
-import {StyleSheet} from "react-native";
+import {Dimensions, StyleSheet} from "react-native";
 import colors from "@constants/colors";
 import {BORDER_RADIUS, BUTTON_MARGIN_BOTTOM, CONTAINER_PADDING} from "@constants/values";
 
 export default StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: colors.grey,
+        height: Dimensions.get('window').height,
+        paddingBottom: 20
     },
     titleWrapper: {
         padding: 18,
@@ -16,13 +17,15 @@ export default StyleSheet.create({
         fontSize: 14,
     },
     secondTitle: {
-        fontSize: 20,
+        fontSize: Dimensions.get('window').height > 700 ? 20 : 15,
     },
     cardWrapper: {
         padding: CONTAINER_PADDING,
+        flex: 1
     },
     footerWrapper: {
-        marginTop: 'auto'
+        // marginTop: 50,
+        paddingHorizontal: 10,
     },
     firstFooter: {
         textAlign: 'center',
@@ -35,14 +38,14 @@ export default StyleSheet.create({
         color: colors.darkGrayText,
     },
     submitButton: {
-        marginTop: 'auto',
+        marginTop: 30,
         paddingHorizontal: CONTAINER_PADDING,
         marginBottom: BUTTON_MARGIN_BOTTOM,
     },
     mask: {
         color: '#232323',
         fontSize: 16,
-        flex: 1
+        flex: 1,
     },
     input: {
         height: 52,

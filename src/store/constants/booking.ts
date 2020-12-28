@@ -15,6 +15,7 @@ const SendPush = createActionTypes('SEND_PUSH');
 const GetOrderInfo = createActionTypes('GET_ORDER_INFO');
 const Reset = createActionTypes('RESET');
 const SetTripInfo = createActionTypes('SET_TRIP_INFO');
+const SetMessagesRead = createActionTypes('SET_MESSAGES_READ');
 
 export {
     SetDriverStatusOnline,
@@ -32,4 +33,5 @@ export {
     GetOrderInfo,
     Reset,
     SetTripInfo,
+    SetMessagesRead,
 }

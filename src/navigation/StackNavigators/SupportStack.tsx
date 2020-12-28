@@ -3,7 +3,6 @@ import PageHeader from "@components/navigation/Header";
 import {CardStyleInterpolators, createStackNavigator} from "@react-navigation/stack";
 import Colors from "@constants/colors";
 import SupportScreen from "../../screens/SupportScreen/SupportScreen";
-import SupportCategoryScreen from "../../screens/SupportCategoryScreen";
 import SupportChatScreen from "../../screens/SupportChatScreen/SupportChatScreen";
 
 const {Navigator, Screen} = createStackNavigator();
@@ -20,17 +19,7 @@ const SupportStack = () => (
             options={{
                 header: (props) => <PageHeader
                     title={"Поддержка"}
-                    {...props}
-                />,
-                cardStyle: {backgroundColor: Colors.grey}
-            }}
-        />
-        <Screen
-            name="SupportCategory"
-            component={SupportCategoryScreen}
-            options={{
-                header: (props) => <PageHeader
-                    title={"Остались вещи"}
+                    right={true}
                     {...props}
                 />,
                 cardStyle: {backgroundColor: Colors.grey}

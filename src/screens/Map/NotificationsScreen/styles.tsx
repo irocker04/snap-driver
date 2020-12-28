@@ -20,5 +20,7 @@ export default StyleSheet.create({
         ...constStyles.bold,
         fontSize: 15
     },
-    messageText: {},
+    messageText: {
+        paddingVertical: 5
+    },
 });

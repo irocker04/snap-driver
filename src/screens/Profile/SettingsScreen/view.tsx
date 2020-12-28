@@ -45,24 +45,6 @@ const SettingsScreenView = ({}: SettingsProps) => {
                     }}
                 />
             </View>
-            <View style={[styles.bar, styles.bottomBorder]}>
-                <Text
-                    style={[
-                        styles.text,
-                        constStyles.bold,
-                        {
-                            color: audio ? colors.blue : colors.black,
-                        },
-                    ]}>
-                    {strings.soundGuide}
-                </Text>
-                <CustomSwitch
-                    value={audio}
-                    onValueChange={() => {
-                        setAudio(!audio);
-                    }}
-                />
-            </View>
             <View style={styles.bar}>
                 <Text style={[styles.text, constStyles.bold]}>
                     {strings.appLanguage}

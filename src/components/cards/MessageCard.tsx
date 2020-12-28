@@ -11,19 +11,21 @@ import TouchablePlatformSpecific from '../common/TouchablePlatformSpecific';
 import colors from '@constants/colors';
 
 interface MessageCardProps {
-    image: ImageSourcePropType;
+    image?: ImageSourcePropType;
     title: any;
+    Icon?: any;
     onPress: any;
 }
 
-const MessageCard = ({image, title, onPress}: MessageCardProps) => {
+const MessageCard = ({image, title, onPress, Icon}: MessageCardProps) => {
 
     return (
         <View style={styles.container}>
             <View style={[styles.touchableWrapper, constStyles.shadow]}>
                 <TouchablePlatformSpecific onPress={onPress}>
                     <View style={styles.imageWrapper}>
-                        <Image source={image} style={styles.image}/>
+                        {!Icon && <Image source={image} style={styles.image}/>}
+                        {Icon}
                     </View>
                 </TouchablePlatformSpecific>
             </View>

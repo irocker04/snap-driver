@@ -3,17 +3,10 @@ import React, {useEffect} from 'react';
 import LanguageSelectView from "./view";
 import {useNavigation} from "@react-navigation/native";
 import SCREENS from "@constants/screens";
-import {StatusBar} from "react-native";
 import colors from "@constants/colors";
 
 const LanguageSelectScreenController = () => {
     const navigation = useNavigation();
-
-    useEffect(() => {
-        StatusBar.setBarStyle('dark-content');
-        StatusBar.setBackgroundColor(colors.white);
-    }, [navigation]);
-
 
     const onPress = () => {
         navigation.navigate(SCREENS.LOGIN);

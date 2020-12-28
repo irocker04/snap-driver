@@ -23,7 +23,6 @@ export default StyleSheet.create({
         padding: CONTAINER_PADDING,
     },
     submitButton: {
-        marginTop: 'auto',
         paddingHorizontal: CONTAINER_PADDING,
         marginBottom: BUTTON_MARGIN_BOTTOM,
     },
@@ -64,7 +63,7 @@ export default StyleSheet.create({
         fontWeight: 'bold'
     },
     counter: {
-        marginTop: 'auto',
+        marginTop: 20,
         alignItems: 'center',
     },
     errorMsg: {

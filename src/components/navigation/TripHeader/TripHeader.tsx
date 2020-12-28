@@ -1,6 +1,5 @@
 import React from 'react';
-import {Text, View} from 'react-native';
-import Icon from '@assets/icons';
+import {ActivityIndicator, Text, View} from 'react-native';
 import colors from '@constants/colors';
 import constStyles from '@constants/constStyles';
 import TouchablePlatformSpecific from "@components/common/TouchablePlatformSpecific";
@@ -11,13 +10,12 @@ import OrderStatus from "@constants/orderStatus";
 interface InnerHeaderProps {
     topTitle: any;
     topData: string;
-    bottomTitle: any;
-    bottomData: string;
     number: string;
     cancelOrder: () => void;
     orderStatus: string;
-    headerTitle?: string,
-    headerStyles?: any,
+    headerTitle?: string;
+    headerStyles?: any;
+    isLoading: boolean;
 
 }
 
@@ -26,8 +24,7 @@ const TripHeader = (
         headerTitle,
         topData,
         topTitle,
-        bottomData,
-        bottomTitle,
+        isLoading,
         cancelOrder,
         orderStatus,
         headerStyles
@@ -57,7 +54,7 @@ const TripHeader = (
                             </View>
                         }
                         {
-                            orderStatus !== OrderStatus.ARRIVED &&
+                            // orderStatus !== OrderStatus.ARRIVED &&
                             <View
                                 style={{
                                     flexDirection: 'row',
@@ -66,15 +63,22 @@ const TripHeader = (
                                     flex: 1
                                 }}
                             >
-                                <Text style={{fontSize: 17}}>Отменить заказ</Text>
+                                {
+                                    orderStatus !== OrderStatus.ARRIVED
+                                        ? <Text style={{fontSize: 17}}>Отменить заказ</Text>
+                                        : <Text/>
+                                }
                                 <View style={[styles.iconWrapper, constStyles.shadow]}>
-                                    <TouchablePlatformSpecific onPress={cancelOrder}>
+                                    <TouchablePlatformSpecific
+                                        onPress={cancelOrder}
+                                        disabled={isLoading}
+                                    >
                                         <View style={styles.icon}>
-                                            <Text
-                                                style={{color: '#fff', fontSize: 15}}
-                                            >
-                                                Х
-                                            </Text>
+                                            {
+                                                !isLoading
+                                                    ? <Text style={{color: colors.blue, fontSize: 18, fontWeight: 'bold'}}>Х</Text>
+                                                    : <ActivityIndicator size={"small"} color={colors.blue}/>
+                                            }
                                         </View>
                                     </TouchablePlatformSpecific>
                                 </View>

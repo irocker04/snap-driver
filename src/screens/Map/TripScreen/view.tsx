@@ -23,6 +23,7 @@ interface IProps {
     destination: any;
     distanceToClient: any;
     isPayedWaiting: boolean;
+    isLoading: boolean;
     waiting: string,
 }
 
@@ -33,7 +34,8 @@ const TripScreenView = (
         distanceToClient,
         isPayedWaiting,
         cancelOrder,
-        waiting
+        waiting,
+        isLoading,
     }: IProps) => {
 
     const renderPanel = () => {
@@ -90,12 +92,13 @@ const TripScreenView = (
             <Map/>
             <View>
                 <TripHeader
+                    isLoading={isLoading}
                     headerTitle={headerText().headerTitle}
                     headerStyles={headerText().styles}
                     orderStatus={orderStatus}
                     topTitle={`${headerText().title}`}
                     topData={`${headerText().data} `}
-                    bottomTitle={strings.distance}
+                    bottomTitle={strings.distance as string}
                     bottomData={`${distanceToClient} км`}
                     number={'orderInfo && orderInfo.user.phone'}
                     cancelOrder={cancelOrder}

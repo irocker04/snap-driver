@@ -11,9 +11,11 @@ import Button from '@components/common/Button';
 import TariffCard from '@components/cards/TariffCard';
 import styles from "./styles";
 import NewOrderScreen from "../NewOrderScreen";
+import NotificationsIcon from "@assets/icons/NotificationsIcon";
 
 interface IProps {
     goToChat: () => void;
+    getCar: () => void;
     showTariff: boolean;
     setShowTariff: (value: (prevState: any) => boolean) => void;
     changeDriverStatus: () => void;
@@ -25,6 +27,7 @@ interface IProps {
 
 let MainScreenView = (
     {
+        getCar,
         showTariff,
         setShowTariff,
         goToChat,
@@ -63,12 +66,17 @@ let MainScreenView = (
                 <View style={styles.content}>
                     <View style={styles.messageWrapper}>
                         <MessageCard
-                            onPress={() => setShowTariff((prevState) => !prevState)}
+                            onPress={() => {
+                                setShowTariff((prevState) => !prevState)
+                                if (showTariff) {
+                                    getCar();
+                                }
+                            }}
                             image={images.taxi}
                             title={strings.myTariff}
                         />
                         <MessageCard
-                            image={images.notification}
+                            Icon={<NotificationsIcon/>}
                             onPress={goToChat}
                             title={strings.notifications}
                         />

@@ -1,18 +1,24 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ChatScreenView from "./view";
 
-const ChatScreenController = ({SendPush, newOrder, messages}: any) => {
+const ChatScreenController = ({SendPush, newOrder, messages, SetMessagesRead}: any) => {
 
     const [message, setMessage] = useState('');
+
+    useEffect(() => {
+        SetMessagesRead();
+    }, [])
 
     function sendMsg() {
         SendPush({
             user_id: newOrder.user_id,
             title: 'message',
-            message
+            message,
+            type: 'clients',
+            read: true,
         }, () => {
+            setMessage('')
         });
-        setMessage('')
     }
 
     return (

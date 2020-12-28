@@ -34,14 +34,14 @@ const AuthenticationStack = () => (
             name={SCREENS.LOGIN}
             component={LoginScreen}
             options={{
-                header: () => <AuthHeader/>
+                headerShown: false
             }}
         />
         <Screen
             name={SCREENS.ENTER_CODE}
             component={EnterCodeScreen}
             options={{
-                header: () => <AuthHeader/>
+                headerShown: false
             }}
         />
     </Navigator>

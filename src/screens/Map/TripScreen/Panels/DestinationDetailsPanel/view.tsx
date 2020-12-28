@@ -11,10 +11,12 @@ import Button from "@components/common/Button";
 interface IProps {
     changeOrderStatus: () => void;
     isLoading: boolean;
+    isUnread: number;
     drivingFrom: string;
     drivingTo: string;
     panResPonder: any;
     collapse: any;
+    airCondition: boolean;
     onPhonePress: () => void;
     goToChat: () => void;
 }
@@ -28,28 +30,26 @@ const DestinationDetailsPanelView = (
         panResPonder,
         collapse,
         onPhonePress,
-        goToChat
+        goToChat,
+        isUnread,
+        airCondition,
     }: IProps) => {
+
     return (
         <View>
             <HatCutout style={styles.hatCutOut}/>
             <View style={styles.wrapper}>
                 <View {...panResPonder.panHandlers}>
-                    <View>
-                        <View style={styles.dragIcon}/>
-                        <View style={styles.innerWrapper}>
-                            <View style={{paddingTop: 5}}>
-                                <Image source={images.locationBorder} style={styles.img}/>
+                    <View style={styles.dragIcon}/>
+                    <View style={styles.innerWrapper}>
+                        <View style={styles.direction}>
+                            <View style={styles.row}>
+                                <View style={[styles.addressCircle]}/>
+                                <Text style={styles.directionText}>{drivingFrom}</Text>
                             </View>
-                            <View>
-                                <View style={styles.drivingFromWrapper}>
-                                    <Text style={styles.drivingText}>{strings.drivingFrom}</Text>
-                                    <Text style={styles.text}>{drivingFrom}</Text>
-                                </View>
-                                <View style={styles.drivingToWrapper}>
-                                    <Text style={styles.drivingText}>{strings.drivingTo}</Text>
-                                    <Text style={styles.text}>{drivingTo}</Text>
-                                </View>
+                            <View style={styles.row}>
+                                <View style={[styles.addressCircle, {backgroundColor: 'red'}]}/>
+                                <Text style={styles.directionText}>{drivingTo}</Text>
                             </View>
                         </View>
                     </View>
@@ -57,14 +57,20 @@ const DestinationDetailsPanelView = (
                 <Animated.View style={{height: collapse, overflow: 'hidden'}}>
                     <View style={styles.optionsWrapper}>
                         <View style={styles.optionWrapper}>
-                            <Icon name="airCondition" color={colors.blue} size={25}/>
+                            <Icon name="airCondition" color={colors.black} size={25}/>
                             <Text style={[styles.optionText]}>{strings.airConditioner}</Text>
-                            <Icon name="checkCircle" color={colors.blue} size={25}/>
+                            {airCondition && <Icon name="checkCircle" color={colors.blue} size={25}/>}
                         </View>
                     </View>
                     <View style={styles.bottomWrapper}>
                         <TouchableWithoutFeedback onPress={goToChat}>
                             <View style={styles.bottomIconWrapper}>
+                                {
+                                    isUnread > 0 &&
+                                    <View style={styles.dot}>
+                                        <Text style={styles.dotText}>{isUnread}</Text>
+                                    </View>
+                                }
                                 <Icon name="chat" size={25} color={colors.blue}/>
                             </View>
                         </TouchableWithoutFeedback>

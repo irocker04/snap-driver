@@ -5,6 +5,7 @@ import DestinationDetailsPanelView from "./view";
 import IAction from "@store/types/IAction";
 import OrderStatus from "@constants/orderStatus";
 import SCREENS from "@constants/screens";
+import {useSelector} from "react-redux";
 
 interface IProps {
     ChangeOrderStatus: IAction;
@@ -14,6 +15,11 @@ interface IProps {
 const DestinationDetailsPanelController = ({ChangeOrderStatus, newOrder}: IProps) => {
 
     const [isLoading, setIsLoading] = useState(false);
+
+    const messages = useSelector(state => state.booking.messages.data);
+
+    const isUnread = messages.filter(msg => !msg.read);
+
 
     const navigation = useNavigation();
 
@@ -76,8 +82,10 @@ const DestinationDetailsPanelController = ({ChangeOrderStatus, newOrder}: IProps
 
     return (
         <DestinationDetailsPanelView
+            isUnread={isUnread.length}
             changeOrderStatus={changeOrderStatus}
             isLoading={isLoading}
+            airCondition={newOrder.data.option_ids}
             drivingFrom={newOrder.data.routes[0].address}
             drivingTo={newOrder.data.routes[1] ? newOrder.data.routes[1].address : 'Не указано'}
             panResPonder={panResPonder}

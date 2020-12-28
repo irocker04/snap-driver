@@ -47,9 +47,13 @@ export default (state = initialState, action: any) => {
                 ...state,
                 notifications: {
                     ...state.notifications,
+                    unread: action.payload.filter(item => !item.read).length,
                     data: action.payload
                 }
             };
+        case 'LOGOUT': {
+            return  initialState;
+        }
         default:
             return state
     }

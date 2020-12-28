@@ -42,22 +42,24 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         marginBottom: 10,
         overflow: 'hidden',
-        width: 140,
     },
     container: {
         paddingHorizontal: 7,
-        paddingVertical: 10,
+        paddingLeft: 40,
+        paddingVertical: 5,
         backgroundColor: colors.paleGray,
         alignItems: 'flex-end',
     },
-    name: {fontSize: 14},
+    name: {
+        fontSize: 14,
+    },
     priceWrapper: {
         flexDirection: 'row',
     },
     price: {
-        fontSize: 18,
+        fontSize: 14,
     },
-    currency: {fontSize: 18},
+    currency: {fontSize: 14},
 });
 
 export default TariffCard;

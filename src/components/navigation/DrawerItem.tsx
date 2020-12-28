@@ -4,6 +4,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import constStyles from '../../constants/constStyles';
 import colors from '../../constants/colors';
 import {StackNavigationProp} from "@react-navigation/stack";
+import {RFPercentage, RFValue} from "react-native-responsive-fontsize";
 
 interface DrawerItemProps {
     item: {
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
     text: {
-        fontSize: 15,
+        fontSize: RFValue(17, 812),
     },
 });
 

@@ -1,4 +1,10 @@
 rootProject.name = 'snapDriver'
+include ':react-native-splash-screen'
+project(':react-native-splash-screen').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-splash-screen/android')
+include ':react-native-launch-application'
+project(':react-native-launch-application').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-launch-application/android')
+include ':@sayem314_react-native-keep-awake'
+project(':@sayem314_react-native-keep-awake').projectDir = new File(rootProject.projectDir, '../node_modules/@sayem314/react-native-keep-awake/android')
 include ':@sentry_react-native'
 project(':@sentry_react-native').projectDir = new File(rootProject.projectDir, '../node_modules/@sentry/react-native/android')
 include ':react-native-background-timer'
@@ -13,8 +19,6 @@ include ':@react-native-community_netinfo'
 project(':@react-native-community_netinfo').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/netinfo/android')
 include ':react-native-push-notification'
 project(':react-native-push-notification').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-push-notification/android')
-include ':react-native-system-setting'
-project(':react-native-system-setting').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-system-setting/android')
 include ':@react-native-community_async-storage'
 project(':@react-native-community_async-storage').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/async-storage/android')
 include ':react-native-image-picker'

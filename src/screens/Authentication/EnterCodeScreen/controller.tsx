@@ -2,7 +2,6 @@ import colors from '@constants/colors';
 import {useNavigation} from '@react-navigation/native';
 import IAction from '@store/types/IAction';
 import React, {useEffect, useState} from 'react';
-import {Alert, StatusBar} from 'react-native';
 import {
     useBlurOnFulfill,
     useClearByFocusCell,
@@ -26,7 +25,6 @@ const EnterCodeScreenController = ({
     ResendCode,
     GetProfile,
     GetCar,
-    SendPush,
 }: IProps) => {
     const navigation = useNavigation();
     const [error, setError] = useState(false);
@@ -40,11 +38,6 @@ const EnterCodeScreenController = ({
 
     const [counter, setCounter] = useState(30);
     const [isLoading, setIsLoading] = useState(false);
-
-    useEffect(() => {
-        StatusBar.setBarStyle('light-content');
-        StatusBar.setBackgroundColor(colors.blue);
-    }, [navigation]);
 
     useEffect(() => {
         PushNotification.configure({

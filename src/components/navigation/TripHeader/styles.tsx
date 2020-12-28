@@ -31,7 +31,7 @@ export default StyleSheet.create({
     icon: {
         width: 40,
         height: 40,
-        backgroundColor: colors.red,
+        backgroundColor: colors.white,
         alignItems: 'center',
         justifyContent: 'center'
     },

@@ -55,7 +55,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#fff',
         borderRadius: 30,
-        overflow: 'hidden',
+        // overflow: 'hidden',
         ...constStyles.shadow,
     },
     optionsWrapper: {
@@ -89,6 +89,67 @@ export default StyleSheet.create({
         fontSize: 15,
         marginRight: 'auto',
         marginLeft: 11.5
+    },
+    directionText: {
+        fontSize: 16,
+    },
+    circle: {
+        width: 8,
+        height: 8,
+        backgroundColor: colors.blue,
+        borderRadius: 100
+    },
+    addressCircle: {
+        width: 15,
+        height: 15,
+        backgroundColor: colors.blue,
+        borderRadius: 100,
+        marginRight: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    innerCircle: {
+        width: 8,
+        height: 8,
+        backgroundColor: '#fff',
+        borderRadius: 100,
+    },
+    icons: {
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 30,
+        marginTop: 3
+    },
+    smallCircle: {
+        width: 3,
+        height: 3,
+        backgroundColor: '#B6C5EE',
+        borderRadius: 100
+    },
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+        marginTop: 20,
+    },
+    direction: {
+        marginHorizontal: 20,
+        marginBottom: 20,
+    },
+    dot: {
+        position: 'absolute',
+        width: 20,
+        height: 20,
+        backgroundColor: colors.red,
+        top: -5,
+        right: 1,
+        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    dotText: {
+        color: colors.white,
+        fontSize: 11,
+        ...constStyles.semibold
     }
-
 })

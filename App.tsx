@@ -1,51 +1,101 @@
-import React, {useEffect} from 'react';
-import * as Sentry from "@sentry/react-native";
-import {Provider} from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { PermissionsAndroid, Platform } from 'react-native';
+import { bindActionCreators } from 'redux';
 import AppNavigator from './src/navigation/AppNavigator';
-import {PersistGate} from 'redux-persist/lib/integration/react';
+// @ts-ignore
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
-import createStore from './src/store/createStore';
+import Geolocation from 'react-native-geolocation-service';
 import api from './src/services/api';
+import { formData } from '@store/utils';
+import map from '@store/actions/map';
+import user from '@store/actions/user';
+import { connect } from 'react-redux';
 
-const {store, persistor} = createStore();
-
-export {store};
-
-const App = () => {
-    useEffect(() => {
-        if (!__DEV__) {
-            Sentry.init({
-                dsn: "https://437523adc34d48efa65180f5add9d014@o477461.ingest.sentry.io/5518383",
-            });
-        }
-        api.setToken(store);
-        RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
-            interval: 10000,
-            fastInterval: 5000,
-        })
-            .then((data) => {
-                // The user has accepted to enable the location services
-                // data can be :
-                //  - "already-enabled" if the location services has been already enabled
-                //  - "enabled" if user has clicked on OK button in the popup
-            })
-            .catch((err) => {
-                // The user has not accepted to enable the location services or something went wrong during the process
-                // "err" : { "code" : "ERR00|ERR01|ERR02", "message" : "message"}
-                // codes :
-                //  - ERR00 : The user has clicked on Cancel button in the popup
-                //  - ERR01 : If the Settings change are unavailable
-                //  - ERR02 : If the popup has failed to open
-            });
-    }, []);
-
-    return (
-        <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-                <AppNavigator/>
-            </PersistGate>
-        </Provider>
-    );
+const requestPermission = async () => {
+  try {
+    let hasPermission;
+    if (Platform.OS === 'android') {
+      hasPermission = await PermissionsAndroid.check(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
+      if (!hasPermission) {
+        await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        );
+      }
+    }
+  } catch (e) {}
 };
 
-export default App;
+const App = ({ UpdateLocation, GetCurrentLocation, store }) => {
+  const [watchId, setWatchId] = useState(null);
+
+  const getCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
+      (data) => {
+        GetCurrentLocation(data.coords);
+        UpdateLocation(
+          formData({
+            lng: data.coords.longitude,
+            lat: data.coords.latitude,
+          }),
+        );
+      },
+      (error) => {
+        // See error code charts below.
+        console.log(error.code, error.message);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 10000,
+        forceRequestLocation: true,
+      },
+    );
+  };
+
+  useEffect(() => {
+    api.setToken(store);
+    RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
+      interval: 10000,
+      fastInterval: 5000,
+    })
+      .then((data) => {})
+      .catch((err) => {});
+
+    requestPermission().then(() => {
+      setTimeout(() => {
+        getCurrentLocation();
+        if (watchId === null) {
+          setWatchId(0);
+          Geolocation.watchPosition(
+            (position) => {
+              GetCurrentLocation(position.coords);
+              UpdateLocation(
+                formData({
+                  lng: position.coords.longitude,
+                  lat: position.coords.latitude,
+                }),
+              );
+            },
+            () => {},
+            { enableHighAccuracy: true },
+          );
+        }
+      }, 0);
+    });
+  }, []);
+
+  return <AppNavigator />;
+};
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      UpdateLocation: user.UpdateLocation,
+      GetCurrentLocation: map.GetCurrentLocation,
+    },
+    dispatch,
+  );
+
+export default connect(null, mapDispatchToProps)(App);

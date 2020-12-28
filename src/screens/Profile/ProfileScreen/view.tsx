@@ -21,11 +21,6 @@ interface ProfileProps {
 }
 
 const ProfileScreenView = ({}: ProfileProps) => {
-    //functions
-    useEffect(() => {
-        StatusBar.setBarStyle('light-content');
-        StatusBar.setBackgroundColor(colors.blue);
-    }, []);
 
     const onPress = () => {
         // navigation.navigate('View');

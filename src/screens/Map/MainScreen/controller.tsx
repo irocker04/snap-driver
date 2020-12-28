@@ -1,177 +1,174 @@
-import {Alert, AppState, StatusBar} from 'react-native';
-import BackgroundGeolocation from '@mauron85/react-native-background-geolocation';
 import NetInfo from '@react-native-community/netinfo';
-import {StackNavigationProp} from '@react-navigation/stack';
-import firebase from "@react-native-firebase/messaging";
+import { StackNavigationProp } from '@react-navigation/stack';
+import firebase from '@react-native-firebase/messaging';
+import LaunchApplication from 'react-native-launch-application';
 import IAction from '@store/types/IAction';
-import React, {useEffect, useState, useCallback} from 'react';
+import React, { PureComponent } from 'react';
 import MainScreenView from './view';
-import colors from '@constants/colors';
 import SCREENS from '@constants/screens';
-import BackgroundTimer from 'react-native-background-timer';
-import {getDistance} from "geolib";
+import { Alert } from 'react-native';
 
 interface IProps {
-    navigation: StackNavigationProp<any>;
-    SetDriverStatusOnline: IAction;
-    SetDriverStatusOffline: IAction;
-    GetOrderInfo: IAction;
-    NewOrder: IAction;
-    SetNetConnection: IAction;
-    driver: any;
-    newOrder: any;
-    isNetConnected: boolean;
-    car: any;
-    UpdateLocation: IAction;
-    ChangeOrderStatus: IAction;
-    Reset: IAction;
-    SetTripInfo: IAction;
-    GetProfile: IAction;
-    SendPush: any;
+  navigation: StackNavigationProp<any>;
+  SetDriverStatusOnline: IAction;
+  SetDriverStatusOffline: IAction;
+  GetOrderInfo: IAction;
+  NewOrder: IAction;
+  SetNetConnection: IAction;
+  driver: any;
+  newOrder: any;
+  isNetConnected: boolean;
+  car: any;
+  user: any;
+  UpdateLocation: IAction;
+  ChangeOrderStatus: IAction;
+  Reset: IAction;
+  GetRegions: IAction;
+  SetTripInfo: IAction;
+  GetProfile: IAction;
+  GetNotifications: IAction;
+  SetDestinationDetails: IAction;
+  GetCar: IAction;
+  SendPush: any;
 }
 
+interface IState {
+  showTariff: boolean;
+}
 
-const MainScreenController = (
-    {
-        navigation,
-        driver,
-        SetDriverStatusOffline,
-        SetDriverStatusOnline,
-        NewOrder,
-        newOrder,
-        SetNetConnection,
-        isNetConnected,
-        car,
-        UpdateLocation,
-        GetProfile,
-        GetOrderInfo,
-        ChangeOrderStatus,
-        Reset,
-        SendPush,
-        SetTripInfo,
-    }: IProps) => {
-    const [showTariff, setShowTariff] = useState(false);
+class MainScreenController extends PureComponent<IProps, IState> {
+  FCM;
+  notificationListener;
+  notificationListener2;
 
-
-    const getCurrentOrder = () => {
-        if (driver.isBusy) {
-            if (newOrder.data.id && newOrder.data.status !== 'new') {
-                GetOrderInfo(newOrder.data.id, () => {
-                    return {
-                        cb: (data: any) => {
-                            ChangeOrderStatus(data);
-                            navigation.reset({
-                                index: 0,
-                                routes: [{name: SCREENS.TRIP}]
-                            })
-                        },
-                        socketCb: (data: any) => {
-                            ChangeOrderStatus(data)
-                        }
-                    }
-                })
-            }
-        } else {
-            checkStatus();
-        }
-    }
-
-    const checkStatus = () => {
-        if (driver.status) {
-            SetDriverStatusOnline(
-                {
-                    carId: car.id,
-                },
-                (bookingInfo) => {
-                    !driver.isBusy && NewOrder(bookingInfo);
-                },
-            );
-        }
-    }
-
-
-
-    useEffect(() => {
-        // SetDriverStatusOffline()
-
-        getCurrentOrder();
-        // const messaging = firebase();
-        // messaging.setBackgroundMessageHandler(async (msg) => {
-        //     checkStatus()
-        // });
-        // messaging.onMessage((msg) => {
-        //     checkStatus()
-        //
-        //     const notification: any = msg.data;
-        //
-        //     if (notification.title === 'message') {
-        //         SendPush({
-        //             id: notification.data.notification_id,
-        //             message: notification.message,
-        //         });
-        //     }
-        //
-        //     if (notification.title === 'coming') {
-        //         Alert.alert('Клиент', 'Клиент выходить');
-        //     }
-        // });
-
-        navigation.addListener('focus', () => {
-            StatusBar.setBarStyle('dark-content');
-            StatusBar.setBackgroundColor(colors.white);
-            GetProfile();
-        });
-
-        NetInfo.addEventListener((state) => {
-            SetNetConnection(state.isConnected && state.isInternetReachable);
-        });
-
-
-        // return BackgroundTimer.clearInterval(intId);
-
-    }, []);
-
-    const routeTo = (screen: string) => () => {
-        navigation.navigate(screen);
+  constructor(props) {
+    super(props);
+    this.state = {
+      showTariff: false,
     };
+    this.FCM = firebase();
+  }
 
-    useEffect(() => {
-        AppState.addEventListener("change", state => {
-            if (state === 'active') {
-                getCurrentOrder();
-            } else if (state === 'background') {
+  componentDidMount() {
+    this.props.GetNotifications();
 
-            }
-        });
-    }, []);
+    this.props.GetRegions();
 
-    const changeDriverStatus = () => {
-        if (driver.status) {
-            SetDriverStatusOffline();
-        } else {
-            SetDriverStatusOnline(
-                {
-                    carId: car.id,
-                },
-                (bookingInfo) => {
-                    !driver.isBusy && NewOrder(bookingInfo);
-                },
-            );
-        }
-    };
+    // this.checkStatus();
+
+    this.notificationListener = this.FCM.setBackgroundMessageHandler(
+      async (msg) => {
+        const notification: any = msg;
+        this.notificationHandler(notification);
+      },
+    );
+
+    this.notificationListener2 = this.FCM.onMessage((msg) => {
+      const notification: any = msg;
+      this.notificationHandler(notification);
+    });
+    this.props.Reset();
+    NetInfo.addEventListener((state) => {
+      this.props.SetNetConnection(
+        state.isConnected && state.isInternetReachable,
+      );
+    });
+
+    this.props.navigation.addListener('focus', () => {
+      this.props.SetDestinationDetails({});
+      this.props.GetProfile();
+      this.props.GetCar();
+    });
+
+    if (this.props.user.balance === 0 || this.props.user.balance < 0) {
+      this.props.SetDriverStatusOffline();
+    }
+  }
+
+  notificationHandler = (notification: any) => {
+    const { driver, NewOrder, SendPush, user } = this.props;
+
+    if (user.balance > 0) {
+      const bookingInfo = notification.data.booking_info;
+
+      if (driver.status && bookingInfo) {
+        !driver.isBusy && NewOrder(JSON.parse(bookingInfo));
+        return LaunchApplication.open('com.snapdriver');
+      }
+    }
+    // this.checkStatus();
+    if (notification) {
+      this.props.GetNotifications();
+    }
+  };
+
+  checkStatus = () => {
+    const { driver, SetDriverStatusOnline, NewOrder, car } = this.props;
+    if (driver.status) {
+      SetDriverStatusOnline(
+        {
+          carId: car.id,
+        },
+        (data) => {
+          !driver.isBusy && NewOrder(data);
+        },
+      );
+    }
+  };
+
+  routeTo = (screen: string) => () => {
+    this.props.navigation.navigate(screen);
+  };
+
+  changeDriverStatus = () => {
+    const {
+      driver,
+      SetDriverStatusOnline,
+      SetDriverStatusOffline,
+      car,
+      NewOrder,
+      user,
+    } = this.props;
+    if (driver.status) {
+      SetDriverStatusOffline();
+    } else {
+      if (user.balance > 0) {
+        SetDriverStatusOnline(
+          {
+            carId: car.id,
+          },
+          (bookingInfo) => {
+            // !driver.isBusy && NewOrder(bookingInfo);
+          },
+        );
+      } else {
+        Alert.alert(
+          'Внимание',
+          'Уважаемый водитель пополните свой баланс, у вас не достаточно средств на счету!',
+        );
+      }
+    }
+  };
+
+  render() {
+    let { driver, newOrder, isNetConnected, car, GetCar } = this.props;
 
     return (
-        <MainScreenView
-            isNetConnected={isNetConnected}
-            goToChat={routeTo(SCREENS.NOTIFICATIONS)}
-            setShowTariff={setShowTariff}
-            showTariff={showTariff}
-            driverStatus={driver.status}
-            changeDriverStatus={changeDriverStatus}
-            isModalVisible={newOrder.isModalVisible}
-            rates={car.rates}
-        />
+      <MainScreenView
+        getCar={GetCar}
+        isNetConnected={isNetConnected}
+        goToChat={this.routeTo(SCREENS.NOTIFICATIONS)}
+        setShowTariff={() =>
+          this.setState({ showTariff: !this.state.showTariff })
+        }
+        showTariff={this.state.showTariff}
+        driverStatus={driver.status}
+        changeDriverStatus={this.changeDriverStatus}
+        isModalVisible={newOrder.isModalVisible}
+        rates={car.rates}
+      />
     );
-};
+  }
+}
 
 export default MainScreenController;

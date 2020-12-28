@@ -12,6 +12,7 @@ export default StyleSheet.create({
     posterWrapper: {
         alignItems: 'center',
         paddingVertical: 20,
+        height: deviceHeight * 0.4,
     },
     posterImage: {
         marginLeft: 20,

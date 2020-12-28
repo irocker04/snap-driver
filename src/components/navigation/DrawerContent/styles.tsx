@@ -1,4 +1,5 @@
 import {StyleSheet} from "react-native";
+import {RFPercentage, RFValue} from "react-native-responsive-fontsize";
 import colors from "@constants/colors";
 import {CONTAINER_PADDING} from "@constants/values";
 
@@ -38,7 +39,7 @@ export default StyleSheet.create({
         fontSize: 15,
     },
     number: {
-        fontSize: 18,
+        fontSize: RFValue(18, 812),
     },
     earningWrapper: {
         flexDirection: 'row',
@@ -80,9 +81,11 @@ export default StyleSheet.create({
         width: 45,
         alignItems: 'center',
     },
-    percentage: {fontSize: 18},
+    percentage: {
+        fontSize: RFValue(18, 812)
+    },
     activityName: {
-        fontSize: 14,
+        fontSize: RFValue(14, 812),
     },
     menuList: {
         marginTop: 10,

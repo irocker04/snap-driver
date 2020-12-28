@@ -2,19 +2,17 @@ import {combineReducers} from "redux";
 import user from "./user";
 import map from "./map";
 import booking from "./booking";
+import regions from "./regions";
 
 
 const appReducer = combineReducers({
     user,
     map,
-    booking
+    booking,
+    regions,
 });
 
 const rootReducer = (state: any, action: any) => {
-    if (action.type === 'LOGOUT') {
-        state = {}
-    }
-
     return appReducer(state, action)
 };
 

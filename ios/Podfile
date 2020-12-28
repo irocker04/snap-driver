@@ -102,6 +102,10 @@ target 'snapDriver' do
 
   pod 'RNSentry', :path => '../node_modules/@sentry/react-native'
 
+  pod 'react-native-keep-awake', :path => '../node_modules/@sayem314/react-native-keep-awake'
+
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
   target 'snapDriverTests' do
     inherit! :complete
     # Pods for testing

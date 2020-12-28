@@ -42,7 +42,7 @@ const TripEndInfoPanelView = ({changeOrderStatus, newOrder, duration, waitingTim
                     <Text style={styles.text}>{distance} км</Text>
                 </View>
                 <Button
-                    onPress={changeOrderStatus}
+                    onLongPress={changeOrderStatus}
                     text={strings.finish as string}
                 />
             </View>

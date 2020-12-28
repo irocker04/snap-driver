@@ -7,6 +7,7 @@ import colors from '@constants/colors';
 import strings from '@constants/strings';
 import styles from "./styles";
 import Button from "@components/common/Button";
+import AuthHeader from "@components/navigation/AuthHeader";
 
 
 interface IProps {
@@ -41,7 +42,10 @@ const EnterCodeView = (
         <View style={styles.container}>
             <KeyboardAvoidingView
                 style={{backgroundColor: colors.white, flex: 1}}
-                contentContainerStyle={{justifyContent: 'space-between'}}>
+                contentContainerStyle={{justifyContent: 'space-between'}}
+                behavior={"position"}
+            >
+                <AuthHeader/>
                 <View style={styles.titleWrapper}>
                     <Text style={[constStyle.semibold, styles.firstTitle]}>
                         {strings.newUser}
@@ -88,15 +92,15 @@ const EnterCodeView = (
                             </TouchableOpacity>
                     }
                 </View>
-                <View style={styles.submitButton}>
-                    <Button
-                        disabled={isButtonDisabled}
-                        isLoading={isLoading}
-                        text={strings.send}
-                        onPress={handleSubmit}
-                    />
-                </View>
             </KeyboardAvoidingView>
+            <View style={styles.submitButton}>
+                <Button
+                    disabled={isButtonDisabled}
+                    isLoading={isLoading}
+                    text={strings.send}
+                    onPress={handleSubmit}
+                />
+            </View>
         </View>
     );
 };

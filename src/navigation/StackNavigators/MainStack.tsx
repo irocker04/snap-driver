@@ -26,7 +26,7 @@ const MainStack = () => (
             name={SCREENS.MAP}
             component={MapScreen}
             options={{
-                headerShown: false
+                headerShown: false,
             }}
         />
         <Screen

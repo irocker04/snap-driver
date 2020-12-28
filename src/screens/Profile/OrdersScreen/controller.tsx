@@ -1,10 +1,8 @@
 import React, {useEffect, useState, useRef} from 'react';
 import OrdersScreenView from "./view";
-import {Animated, StatusBar} from "react-native";
-import colors from "@constants/colors";
+import {Animated} from "react-native";
 import {StackNavigationProp} from "@react-navigation/stack";
 import IAction from "@store/types/IAction";
-import moment from "moment";
 
 interface IProps {
     navigation: StackNavigationProp<any>;
@@ -25,8 +23,6 @@ const OrdersScreenController = ({navigation, orderList, GetOrderList}: IProps) =
 
 
         useEffect(() => {
-            StatusBar.setBarStyle('light-content');
-            StatusBar.setBackgroundColor(colors.blue);
             GetOrderList()
         }, [navigation]);
 

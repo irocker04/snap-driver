@@ -25,7 +25,7 @@ export default StyleSheet.create({
         left: -1000,
     },
     activeTariff: {
-        left: -40
+        left: -35
     },
     button: {
         height: 63,

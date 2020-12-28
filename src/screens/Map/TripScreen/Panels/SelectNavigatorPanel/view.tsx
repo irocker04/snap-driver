@@ -35,7 +35,7 @@ const SelectNavigatorPanelView = (
                     <View style={styles.iconWrapper}>
                         <TouchablePlatformSpecific onPress={openGoogleMaps}>
                             <View style={styles.icon}>
-                                <Icon name="locationFancy" size={20} color={colors.blue}/>
+                                <Icon name="path" size={20} color={colors.blue}/>
                             </View>
                         </TouchablePlatformSpecific>
                     </View>

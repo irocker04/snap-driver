@@ -17,6 +17,7 @@ const Avatar = ({avatar, setAvatar, style, handleSubmit, initial}: AvatarProps) 
     const onAddPress = () => {
         const options = {};
         ImagePicker.launchImageLibrary({noData: true}, (response) => {
+            console.log(response)
             if (response.uri) {
                 setAvatar(response);
                 Alert.alert(
